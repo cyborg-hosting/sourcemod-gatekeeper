@@ -59,42 +59,34 @@ public bool OnClientPreConnectEx(const char[] name, char password[255], const ch
 {
     if(!g_bPluginEnabled)
     {
-        PrintToServer("1");
         return true;
     }
 
-    /*
     AdminId admin = FindAdminByIdentity(AUTHMETHOD_STEAM, steamID);
 
     if(GetAdminFlag(admin, Admin_Generic))
     {
         return true;
     }
-    */
 
     Database db = db_ConnectToDB();
     if(db == null)
     {
-        PrintToServer("2");
         return true;
     }
 
     int available = 1;
     if(!db_SelectServerAvailability(db, g_sServerIdentifier, available))
     {
-        PrintToServer("3");
         return true;
     }
 
     if(available != 0)
     {
-        PrintToServer("4");
         return true;
     }
 
     strcopy(rejectReason, 255, "This server is closed now. Please consider going to our other server.");
-
-    PrintToServer("5");
 
     return false;
 }
