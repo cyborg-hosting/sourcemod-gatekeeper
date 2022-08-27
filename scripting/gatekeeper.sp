@@ -13,19 +13,15 @@ public Plugin myinfo =
     url = "https://github.com/plugins-for-hosting/sourcemod-gatekeeper/"
 };
 
-bool g_bPluginEnabled = false;
-bool g_bIdentifierExists = false;
+#include <gatekeeper/global.sp>
 
-char g_sServerIdentifier[32] = "";
-
-int g_iPlayerMargin = 4;
-int g_iValidPlayers = 0;
-
+#include <gatekeeper/condition.sp>
 #include <gatekeeper/cvar.sp>
 #include <gatekeeper/db.sp>
 #include <gatekeeper/hook.sp>
 #include <gatekeeper/lateload.sp>
 #include <gatekeeper/misc.sp>
+#include <gatekeeper/notify.sp>
 
 public APLRes AskPluginLoad2(Handle myself, bool late, char[] error, int err_max)
 {
@@ -58,6 +54,11 @@ public void OnPluginEnd()
 public bool OnClientPreConnectEx(const char[] name, char password[255], const char[] ip, const char[] steamID, char rejectReason[255])
 {
     if(!g_bPluginEnabled)
+    {
+        return true;
+    }
+
+    if(!g_bIsServerLocked)
     {
         return true;
     }
