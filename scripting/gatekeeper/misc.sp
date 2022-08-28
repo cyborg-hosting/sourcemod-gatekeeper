@@ -18,6 +18,7 @@ stock bool IsValidClient(int client, bool replaycheck = true)
 	return true;
 }
 
+/*
 void LogPlayers(int player, int maxplayer)
 {
     Database db = db_ConnectToDB();
@@ -31,3 +32,4 @@ void LogPlayers(int player, int maxplayer)
 
     delete db;
 }
+*/

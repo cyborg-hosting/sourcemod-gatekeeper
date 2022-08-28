@@ -78,7 +78,7 @@ public void OnServerIdentifierChange(ConVar convar, const char[] oldValue, const
 
     if(!g_bIdentifierExists)
     {
-        LogPlayers(0, 0);
+        db_LogPlayers(0, 0);
     }
 
     strcopy(g_sServerIdentifier, sizeof(g_sServerIdentifier), newValue);

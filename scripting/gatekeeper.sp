@@ -18,7 +18,6 @@ public Plugin myinfo =
 
 #include <gatekeeper/global.sp>
 #include <gatekeeper/cvar.sp>
-//#include <gatekeeper/cmd.sp>
 #include <gatekeeper/db.sp>
 #include <gatekeeper/hook.sp>
 #include <gatekeeper/lateload.sp>
@@ -37,7 +36,6 @@ public APLRes AskPluginLoad2(Handle myself, bool late, char[] error, int err_max
 public void OnPluginStart()
 {
     cvar_OnPluginStart();
-    //cmd_OnPluginStart();
     notify_OnPluginStart();
 
     lateload_Check();
@@ -59,12 +57,11 @@ public void OnPluginEnd()
         return;
     }
 
-    LogPlayers(0, 0);
+    db_LogPlayers(0, 0);
 }
 
 public void OnMapStart()
 {
-    //g_bIsServerLocked = true;
     notify_OnMapStart();
 }
 
@@ -77,13 +74,6 @@ public bool OnClientPreConnectEx(const char[] name, char password[255], const ch
         return true;
     }
 
-    /*
-    if(!g_bIsServerLocked)
-    {
-        return true;
-    }
-    */
-
     AdminId admin = FindAdminByIdentity(AUTHMETHOD_STEAM, steamID);
 
     if(GetAdminFlag(admin, Admin_Generic))
@@ -94,16 +84,12 @@ public bool OnClientPreConnectEx(const char[] name, char password[255], const ch
     Database db = db_ConnectToDB();
     if(db == null)
     {
-        //g_bIsServerLocked = false;
-        
         return true;
     }
 
     int available = 1;
     if(!db_SelectServerAvailability(db, g_sServerIdentifier, available))
     {
-        //g_bIsServerLocked = false;
-
         delete db;
 
         return true;
@@ -113,8 +99,6 @@ public bool OnClientPreConnectEx(const char[] name, char password[255], const ch
 
     if(available != 0)
     {
-        //g_bIsServerLocked = false;
-
         return true;
     }
 
@@ -131,13 +115,6 @@ public void OnClientPostAdminCheck(int client)
         return;
     }
 
-    /*
-    if(!g_bIsServerLocked)
-    {
-        return;
-    }
-    */
-
     AdminId admin = GetUserAdmin(client);
 
     if(GetAdminFlag(admin, Admin_Generic))
@@ -148,8 +125,6 @@ public void OnClientPostAdminCheck(int client)
     Database db = db_ConnectToDB();
     if(db == null)
     {
-        //g_bIsServerLocked = false;
-
         return;
     }
 
@@ -157,8 +132,6 @@ public void OnClientPostAdminCheck(int client)
 
     if(!db_SelectServerAvailability(db, g_sServerIdentifier, available))
     {
-        //g_bIsServerLocked = false;
-
         delete db;
 
         return;
@@ -168,8 +141,6 @@ public void OnClientPostAdminCheck(int client)
 
     if(available != 0)
     {
-        //g_bIsServerLocked = false;
-
         return;
     }
 

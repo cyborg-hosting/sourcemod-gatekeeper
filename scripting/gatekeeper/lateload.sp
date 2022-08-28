@@ -37,5 +37,5 @@ void lateload_DBQuery()
         return;
     }
 
-    LogPlayers(g_iValidPlayers, MaxClients);
+    db_LogPlayers(g_iValidPlayers, MaxClients);
 }

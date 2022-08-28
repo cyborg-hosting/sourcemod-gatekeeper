@@ -19,7 +19,7 @@ public void OnClientPutInServer(int client)
         return;
     }
 
-    LogPlayers(g_iValidPlayers, MaxClients);
+    db_LogPlayers(g_iValidPlayers, MaxClients);
 }
 
 public void OnClientDisconnect(int client)
@@ -43,5 +43,5 @@ public void OnClientDisconnect(int client)
         return;
     }
 
-    LogPlayers(g_iValidPlayers, MaxClients);
+    db_LogPlayers(g_iValidPlayers, MaxClients);
 }
