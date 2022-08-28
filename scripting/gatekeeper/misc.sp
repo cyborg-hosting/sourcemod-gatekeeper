@@ -17,19 +17,3 @@ stock bool IsValidClient(int client, bool replaycheck = true)
 	
 	return true;
 }
-
-/*
-void LogPlayers(int player, int maxplayer)
-{
-    Database db = db_ConnectToDB();
-    
-    if(db == null)
-    {
-        return;
-    }
-
-    db_InsertServerPlayer(db, g_sServerIdentifier, player, maxplayer);
-
-    delete db;
-}
-*/

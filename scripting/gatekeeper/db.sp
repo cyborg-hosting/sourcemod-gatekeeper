@@ -21,66 +21,12 @@ static char sSelectPlayer[] = "SELECT 1 = ALL( \
     WHERE `server_rank` = 1 \
 ) as `condition`;";
 
-void db_LogPlayers(int player, int maxplayer)
-{
-    DataPack pack = new DataPack();
-
-    pack.WriteCell(player);
-    pack.WriteCell(maxplayer);
-
-    if(SQL_CheckConfig("gatekeeper"))
-    {
-        Database.Connect(db_LogPlayersOnConnect, "gatekeeper", pack);
-    }
-    else
-    {
-        Database.Connect(db_LogPlayersOnConnect, "default", pack);
-    }
-}
-
-public void db_LogPlayersOnConnect(Database db, const char[] error, DataPack pack)
-{
-    static char query_statement[1024];
-
-    if(db == null)
-    {
-        LogError("Could not connect to the database: %s", error);
-
-        delete pack;
-
-        return;
-    }
-
-    pack.Reset();
-
-    int player = pack.ReadCell();
-    int maxplayer = pack.ReadCell();
-
-    db.Format(query_statement, sizeof(query_statement), sInsertPlayer, g_sServerIdentifier, player, maxplayer);
-
-    db.Query(db_LogPlayersOnQuery, query_statement);
-
-    delete pack;
-    delete db;
-}
-
-public void db_LogPlayersOnQuery(Database db, DBResultSet results, const char[] error, any data)
-{
-    if(db == null)
-    {
-        return;
-    }
-
-    delete db;
-}
-
-stock Database db_ConnectToDB()
+Database db_ConnectToDB()
 {
     static bool bConnection = false;
 
     Database db = null;
     char error[256];
-
 
     if(db == null)
     {
@@ -104,7 +50,7 @@ stock Database db_ConnectToDB()
     return db;
 }
 
-stock bool CreateTable(Database db)
+bool CreateTable(Database db)
 {
     bool connection = true;
 
@@ -118,6 +64,7 @@ bool db_SelectServerAvailability(Database db, const char[] server, int &availabl
     int escapedServerLength = 2 * strlen(server) + 1;
     char[] escapedServer = new char[escapedServerLength];
     SQL_EscapeString(db, server, escapedServer, escapedServerLength);
+    
 
     int queryStatementLength = sizeof(sSelectPlayer) + 11 + strlen(escapedServer);
     char[] queryStatement = new char[queryStatementLength];
@@ -126,22 +73,7 @@ bool db_SelectServerAvailability(Database db, const char[] server, int &availabl
     return SelectIntegerQuery(db, queryStatement, available);
 }
 
-stock bool FastQuery(Database db, const char[] queryStatement)
-{
-    char error[255];
-
-    if(!SQL_FastQuery(db, queryStatement))
-    {
-        SQL_GetError(db, error, sizeof(error));
-        LogError("Could not query to database: %s", error);
-
-        return false;
-    }
-
-    return true;
-}
-
-stock bool SelectIntegerQuery(Database db, const char[] queryStatement, int &data)
+bool SelectIntegerQuery(Database db, const char[] queryStatement, int &data)
 {
     char error[255];
 
@@ -231,6 +163,61 @@ public void db_NotifyOnQuery(Database db, DBResultSet results, const char[] erro
     else
     {
         notify_StopTimer();
+    }
+
+    delete db;
+}
+
+// Log Players
+
+void db_LogPlayers(int player, int maxplayer)
+{
+    DataPack pack = new DataPack();
+
+    pack.WriteCell(player);
+    pack.WriteCell(maxplayer);
+
+    if(SQL_CheckConfig("gatekeeper"))
+    {
+        Database.Connect(db_LogPlayersOnConnect, "gatekeeper", pack);
+    }
+    else
+    {
+        Database.Connect(db_LogPlayersOnConnect, "default", pack);
+    }
+}
+
+public void db_LogPlayersOnConnect(Database db, const char[] error, DataPack pack)
+{
+    static char query_statement[1024];
+
+    if(db == null)
+    {
+        LogError("Could not connect to the database: %s", error);
+
+        delete pack;
+
+        return;
+    }
+
+    pack.Reset();
+
+    int player = pack.ReadCell();
+    int maxplayer = pack.ReadCell();
+
+    db.Format(query_statement, sizeof(query_statement), sInsertPlayer, g_sServerIdentifier, player, maxplayer);
+
+    db.Query(db_LogPlayersOnQuery, query_statement);
+
+    delete pack;
+    delete db;
+}
+
+public void db_LogPlayersOnQuery(Database db, DBResultSet results, const char[] error, any data)
+{
+    if(db == null)
+    {
+        return;
     }
 
     delete db;

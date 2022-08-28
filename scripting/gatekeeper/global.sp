@@ -6,8 +6,6 @@ char g_sServerKickMessage[256] = "This server is closed now. Please consider goi
 int g_iPlayerMargin = 4;
 int g_iValidPlayers = 0;
 
-//bool g_bIsServerLocked = true;
-
 
 // Hud Settings
 
