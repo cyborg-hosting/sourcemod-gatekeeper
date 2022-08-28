@@ -166,10 +166,23 @@ public void db_NotifyOnDatabaseConnect(Database db, const char[] error, any data
 
 public void db_NotifyOnQuery(Database db, DBResultSet results, const char[] error, any data)
 {
+    if(db == null)
+    {
+        return;
+    }
+
+    if(results == null)
+    {
+        delete db;
+
+        return;
+    }
+
     if(!results.FetchRow())
     {
         notify_StopTimer();
 
+        delete results;
         delete db;
 
         return;
@@ -186,5 +199,6 @@ public void db_NotifyOnQuery(Database db, DBResultSet results, const char[] erro
         notify_StopTimer();
     }
 
+    delete results;
     delete db;
 }
