@@ -27,5 +27,15 @@ void lateload_Check()
 
 void lateload_DBQuery()
 {
+    if(!lateload)
+    {
+        return;
+    }
+
+    if(!g_bIdentifierExists)
+    {
+        return;
+    }
+
     LogPlayers(g_iValidPlayers, MaxClients);
 }
