@@ -167,6 +167,10 @@ public void db_NotifyOnQuery(Database db, DBResultSet results, const char[] erro
     if(!results.FetchRow())
     {
         notify_StopTimer();
+
+        delete db;
+
+        return;
     }
 
     int available = results.FetchInt(0);

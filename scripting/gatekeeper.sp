@@ -102,8 +102,12 @@ public bool OnClientPreConnectEx(const char[] name, char password[255], const ch
     {
         //g_bIsServerLocked = false;
 
+        delete db;
+
         return true;
     }
+
+    delete db;
 
     if(available != 0)
     {
@@ -153,8 +157,12 @@ public void OnClientPostAdminCheck(int client)
     {
         //g_bIsServerLocked = false;
 
+        delete db;
+
         return;
     }
+
+    delete db;
 
     if(available != 0)
     {
