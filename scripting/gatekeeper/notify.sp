@@ -16,7 +16,7 @@ void notify_OnPluginStart()
 
 void notify_OnMapStart()
 {
-    //PrecacheSound(ALERT_SOUND);
+    PrecacheSound(ALERT_SOUND);
 
     CreateTimer(10.0, db_NotifyOnQueryTimerFire, _, TIMER_REPEAT | TIMER_FLAG_NO_MAPCHANGE);
 }
@@ -26,6 +26,8 @@ void notify_StartTimer()
 {
     if(notify_timer == null)
     {
+        EmitSoundToAll(ALERT_SOUND);
+
         notify_timer = CreateTimer(1.0, notify_OnTimerFire, _, TIMER_REPEAT | TIMER_FLAG_NO_MAPCHANGE);
     }
 }

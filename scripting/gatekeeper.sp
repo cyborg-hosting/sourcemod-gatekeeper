@@ -1,4 +1,5 @@
 #include <sourcemod>
+#include <sdktools>
 #include <connect>
 
 #pragma semicolon 1
