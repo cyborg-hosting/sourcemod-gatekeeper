@@ -47,6 +47,8 @@ public void OnConfigsExecuted()
 {
     cvar_OnConfigsExecuted();
 
+    notify_OnConfigsExecuted();
+
     lateload_DBQuery();
 }
 

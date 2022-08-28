@@ -17,10 +17,12 @@ void notify_OnPluginStart()
 void notify_OnMapStart()
 {
     PrecacheSound(ALERT_SOUND);
-
-    CreateTimer(10.0, db_NotifyOnQueryTimerFire, _, TIMER_REPEAT | TIMER_FLAG_NO_MAPCHANGE);
 }
 
+void notify_OnConfigsExecuted()
+{
+    CreateTimer(10.0, db_NotifyOnQueryTimerFire, _, TIMER_REPEAT | TIMER_FLAG_NO_MAPCHANGE);
+}
 
 void notify_StartTimer()
 {
