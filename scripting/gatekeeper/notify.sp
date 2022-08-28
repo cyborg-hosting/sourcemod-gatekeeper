@@ -1,6 +1,6 @@
 #define ALERT_SOUND "ui/system_message_alert.wav"
 
-static Handle timer = null;
+static Handle notify_timer = null;
 
 static Handle hudText = null;
 
@@ -16,25 +16,30 @@ void notify_OnPluginStart()
 
 void notify_OnMapStart()
 {
-    PrecacheSound(ALERT_SOUND);
+    //PrecacheSound(ALERT_SOUND);
+
+    CreateTimer(10.0, db_NotifyOnQueryTimerFire, _, TIMER_REPEAT | TIMER_FLAG_NO_MAPCHANGE);
 }
+
 
 void notify_StartTimer()
 {
-    if(timer == null)
+    if(notify_timer == null)
     {
-        timer = CreateTimer(1.0, notify_OnTimerFire, _, TIMER_REPEAT | TIMER_FLAG_NO_MAPCHANGE);
+        notify_timer = CreateTimer(1.0, notify_OnTimerFire, _, TIMER_REPEAT | TIMER_FLAG_NO_MAPCHANGE);
     }
 }
 
 void notify_StopTimer()
 {
-    delete timer;
+    delete notify_timer;
 }
 
 public Action notify_OnTimerFire(Handle timer)
 {
     notify_PrintHudText();
+
+    return Plugin_Continue;
 }
 
 void notify_PrintHudText()

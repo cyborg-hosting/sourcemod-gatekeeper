@@ -7,10 +7,12 @@ public void OnClientPutInServer(int client)
 
     g_iValidPlayers += 1;
 
+    /*
     if(g_iValidPlayers != 0)
     {
         g_bIsServerLocked = false;
     }
+    */
 
     if(!g_bIdentifierExists)
     {
@@ -29,10 +31,12 @@ public void OnClientDisconnect(int client)
 
     g_iValidPlayers -= 1;
 
+    /*
     if(g_iValidPlayers == 0)
     {
         g_bIsServerLocked = false;
     }
+    */
 
     if(!g_bIdentifierExists)
     {

@@ -4,7 +4,7 @@ static ConVar hPlayerMargin = null;
 
 static ConVar hKickMessage = null;
 
-/*
+// HUD SETTINGS
 static ConVar hNotifyMessage = null;
 
 static ConVar hHudXCvar = null;
@@ -12,7 +12,6 @@ static ConVar hHudYCvar = null;
 static ConVar hHudRCvar = null;
 static ConVar hHudGCvar = null;
 static ConVar hHudBCvar = null;
-*/
 
 
 stock void cvar_OnPluginStart()
@@ -23,7 +22,13 @@ stock void cvar_OnPluginStart()
 
     hKickMessage = CreateConVar("sm_gatekeeper_kick_msg", "This server is closed now. Please consider going to our other server.", "Gatekeeper Kick Message");
 
-    /*
+    hPluginEnabled.AddChangeHook(OnPluginEnabledChange);
+    hServerIdentifier.AddChangeHook(OnServerIdentifierChange);
+    hPlayerMargin.AddChangeHook(OnPlayerMarginChange);
+
+    hKickMessage.AddChangeHook(OnKickMessageChange);
+
+    // HUD SETTINGS
     hNotifyMessage = CreateConVar("sm_gatekeeper_notify_message", "Server will be locked on map change.", "Gatekeeper Hud Message for notifying lock");
 
     hHudXCvar = CreateConVar("sm_gatekeeper_hud_text_x_pos", "0.01", "X-position for HUD timer (only on supported games) -1 = center", _, true, -1.0, true, 1.0);
@@ -31,15 +36,7 @@ stock void cvar_OnPluginStart()
     hHudRCvar = CreateConVar("sm_gatekeeper_hud_text_red", "0", "Amount of red for the HUD timer (only on supported games)", _, true, 0.0, true, 255.0);
     hHudGCvar = CreateConVar("sm_gatekeeper_hud_text_green", "255", "Amount of red for the HUD timer (only on supported games)", _, true, 0.0, true, 255.0);
     hHudBCvar = CreateConVar("sm_gatekeeper_hud_text_blue", "0", "Amount of red for the HUD timer (only on supported games)", _, true, 0.0, true, 255.0);
-    */
 
-    hPluginEnabled.AddChangeHook(OnPluginEnabledChange);
-    hServerIdentifier.AddChangeHook(OnServerIdentifierChange);
-    hPlayerMargin.AddChangeHook(OnPlayerMarginChange);
-
-    hKickMessage.AddChangeHook(OnKickMessageChange);
-
-    /*
     hNotifyMessage.AddChangeHook(OnNotifyMessageChange);
 
     hHudXCvar.AddChangeHook(OnHudXChange);
@@ -47,7 +44,6 @@ stock void cvar_OnPluginStart()
     hHudRCvar.AddChangeHook(OnHudRChange);
     hHudGCvar.AddChangeHook(OnHudGChange);
     hHudBCvar.AddChangeHook(OnHudBChange);
-    */
 }
 
 stock void cvar_OnConfigsExecuted()
@@ -61,7 +57,7 @@ stock void cvar_OnConfigsExecuted()
 
     hKickMessage.GetString(g_sServerKickMessage, sizeof(g_sServerKickMessage));
 
-    /*
+    // HUD SETTINGS
     hNotifyMessage.GetString(g_sNotifyMessage, sizeof(g_sNotifyMessage));
 
     g_hud.PosX = hHudXCvar.FloatValue;
@@ -69,7 +65,6 @@ stock void cvar_OnConfigsExecuted()
     g_hud.ColorRed = hHudRCvar.IntValue;
     g_hud.ColorGreen = hHudGCvar.IntValue;
     g_hud.ColorBlue = hHudBCvar.IntValue;
-    */
 }
 
 public void OnPluginEnabledChange(ConVar convar, const char[] oldValue, const char[] newValue)
@@ -79,13 +74,14 @@ public void OnPluginEnabledChange(ConVar convar, const char[] oldValue, const ch
 
 public void OnServerIdentifierChange(ConVar convar, const char[] oldValue, const char[] newValue)
 {
-    strcopy(g_sServerIdentifier, sizeof(g_sServerIdentifier), newValue);
     g_bIdentifierExists = strlen(g_sServerIdentifier) != 0;
 
     if(!g_bIdentifierExists)
     {
         LogPlayers(0, 0);
     }
+
+    strcopy(g_sServerIdentifier, sizeof(g_sServerIdentifier), newValue);
 }
 
 public void OnPlayerMarginChange(ConVar convar, const char[] oldValve, const char[] newValue)
@@ -98,7 +94,8 @@ public void OnKickMessageChange(ConVar convar, const char[] oldValue, const char
     strcopy(g_sServerKickMessage, sizeof(g_sServerKickMessage), newValue);
 }
 
-/*
+// HUD CONVAR CHANGE HOOK
+
 public void OnNotifyMessageChange(ConVar convar, const char[] oldValue, const char[] newValue)
 {
     strcopy(g_sNotifyMessage, sizeof(g_sNotifyMessage), newValue);
@@ -128,4 +125,3 @@ public void OnHudBChange(ConVar convar, const char[] oldValue, const char[] newV
 {
     g_hud.ColorBlue = StringToInt(newValue);
 }
-*/

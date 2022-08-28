@@ -17,11 +17,12 @@ public Plugin myinfo =
 
 #include <gatekeeper/global.sp>
 #include <gatekeeper/cvar.sp>
+//#include <gatekeeper/cmd.sp>
 #include <gatekeeper/db.sp>
 #include <gatekeeper/hook.sp>
 #include <gatekeeper/lateload.sp>
 #include <gatekeeper/misc.sp>
-//#include <gatekeeper/notify.sp>
+#include <gatekeeper/notify.sp>
 
 public APLRes AskPluginLoad2(Handle myself, bool late, char[] error, int err_max)
 {
@@ -35,7 +36,8 @@ public APLRes AskPluginLoad2(Handle myself, bool late, char[] error, int err_max
 public void OnPluginStart()
 {
     cvar_OnPluginStart();
-    //notify_OnPluginStart();
+    //cmd_OnPluginStart();
+    notify_OnPluginStart();
 
     lateload_Check();
 }
@@ -59,8 +61,8 @@ public void OnPluginEnd()
 
 public void OnMapStart()
 {
-    g_bIsServerLocked = true;
-    //notify_OnMapStart();
+    //g_bIsServerLocked = true;
+    notify_OnMapStart();
 }
 
 // Connect Extension Hook
@@ -72,10 +74,12 @@ public bool OnClientPreConnectEx(const char[] name, char password[255], const ch
         return true;
     }
 
+    /*
     if(!g_bIsServerLocked)
     {
         return true;
     }
+    */
 
     AdminId admin = FindAdminByIdentity(AUTHMETHOD_STEAM, steamID);
 
@@ -87,7 +91,7 @@ public bool OnClientPreConnectEx(const char[] name, char password[255], const ch
     Database db = db_ConnectToDB();
     if(db == null)
     {
-        g_bIsServerLocked = false;
+        //g_bIsServerLocked = false;
         
         return true;
     }
@@ -95,14 +99,14 @@ public bool OnClientPreConnectEx(const char[] name, char password[255], const ch
     int available = 1;
     if(!db_SelectServerAvailability(db, g_sServerIdentifier, available))
     {
-        g_bIsServerLocked = false;
+        //g_bIsServerLocked = false;
 
         return true;
     }
 
     if(available != 0)
     {
-        g_bIsServerLocked = false;
+        //g_bIsServerLocked = false;
 
         return true;
     }
@@ -113,7 +117,6 @@ public bool OnClientPreConnectEx(const char[] name, char password[255], const ch
     return false;
 }
 
-/*
 public void OnClientPostAdminCheck(int client)
 {
     if(!g_bPluginEnabled)
@@ -121,10 +124,12 @@ public void OnClientPostAdminCheck(int client)
         return;
     }
 
+    /*
     if(!g_bIsServerLocked)
     {
         return;
     }
+    */
 
     AdminId admin = GetUserAdmin(client);
 
@@ -136,7 +141,7 @@ public void OnClientPostAdminCheck(int client)
     Database db = db_ConnectToDB();
     if(db == null)
     {
-        g_bIsServerLocked = false;
+        //g_bIsServerLocked = false;
 
         return;
     }
@@ -145,18 +150,17 @@ public void OnClientPostAdminCheck(int client)
 
     if(!db_SelectServerAvailability(db, g_sServerIdentifier, available))
     {
-        g_bIsServerLocked = false;
+        //g_bIsServerLocked = false;
 
         return;
     }
 
     if(available != 0)
     {
-        g_bIsServerLocked = false;
+        //g_bIsServerLocked = false;
 
         return;
     }
 
     KickClient(client, "%s", g_sServerKickMessage);
 }
-*/
