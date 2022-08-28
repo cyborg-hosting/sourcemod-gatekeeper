@@ -54,6 +54,8 @@ stock Database db_ConnectToDB()
 
     if(!bConnection)
     {
+        delete db;
+
         return null;
     }	
 
