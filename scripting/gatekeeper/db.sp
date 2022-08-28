@@ -33,11 +33,11 @@ stock Database db_ConnectToDB()
 
     if(SQL_CheckConfig("gatekeeper"))
     {
-        db = SQL_Connect("gatekeeper", true, error, sizeof(error));
+        db = SQL_Connect("gatekeeper", false, error, sizeof(error));
     }
     else
     {
-        db = SQL_Connect("default", true, error, sizeof(error));
+        db = SQL_Connect("default", false, error, sizeof(error));
     }
 
     if(db == null)
