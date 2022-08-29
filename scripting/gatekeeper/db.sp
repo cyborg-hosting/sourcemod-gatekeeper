@@ -28,9 +28,18 @@ Database db_ConnectToDB()
     Database db = null;
     char error[256];
 
+    if(SQL_CheckConfig("gatekeeper"))
+    {
+        db = SQL_Connect("gatekeeper", false, error, sizeof(error));
+    }
+    else
+    {
+        db = SQL_Connect("default", false, error, sizeof(error));
+    }
+
     if(db == null)
     {
-        LogError("Could not connect to the database: %s", error);
+        LogStackTrace("Could not connect to the database: %s", error);
 
         return null;
     }
@@ -82,7 +91,7 @@ bool SelectIntegerQuery(Database db, const char[] queryStatement, int &data)
     if((hQuery = SQL_Query(db, queryStatement)) == null)
     {
         SQL_GetError(db, error, sizeof(error));
-        LogError("Could not query to database: %s", error);
+        LogStackTrace("Could not query to database: %s", error);
 
         return false;
     }
@@ -119,7 +128,7 @@ public void db_NotifyOnDatabaseConnect(Database db, const char[] error, any data
 
     if(db == null)
     {
-        LogError("Could not connect to the database: %s", error);
+        LogStackTrace("Could not connect to the database: %s", error);
 
         return;
     }
@@ -193,7 +202,7 @@ public void db_LogPlayersOnConnect(Database db, const char[] error, DataPack pac
 
     if(db == null)
     {
-        LogError("Could not connect to the database: %s", error);
+        LogStackTrace("Could not connect to the database: %s", error);
 
         delete pack;
 
