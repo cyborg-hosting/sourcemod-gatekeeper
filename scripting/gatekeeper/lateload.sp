@@ -16,7 +16,7 @@ void lateload_Check()
 
     for(int i = 1; i <= MaxClients; i++)
     {
-        if(!IsValidClient(i))
+        if(!IsClientConnected(i))
         {
             continue;
         }

@@ -1,6 +1,11 @@
 public void OnClientPutInServer(int client)
 {
-    if(!IsValidClient(client))
+    if(client <= 0 || client > MaxClients)
+    {
+        return;
+    }
+
+    if(!IsClientConnected(client))
     {
         return;
     }
@@ -17,10 +22,15 @@ public void OnClientPutInServer(int client)
 
 public void OnClientDisconnect(int client)
 {
-    if(!IsValidClient(client))
+    if(client <= 0 || client > MaxClients)
     {
         return;
-    } 
+    }
+
+    if(!IsClientConnected(client))
+    {
+        return;
+    }
 
     g_iValidPlayers -= 1;
 
