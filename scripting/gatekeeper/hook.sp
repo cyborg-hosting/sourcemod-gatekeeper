@@ -1,4 +1,4 @@
-public void OnClientPutInServer(int client)
+public void OnClientConnected(int client)
 {
     if(client <= 0 || client > MaxClients)
     {
